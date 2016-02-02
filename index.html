@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Musichaos by timofurrer</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Musichaos</h1>
+      <h2 class="project-tagline">tool to tidy up your music chaos</h2>
+      <a href="https://github.com/timofurrer/musichaos" class="btn">View on GitHub</a>
+      <a href="https://github.com/timofurrer/musichaos/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/timofurrer/musichaos/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="musichaos" class="anchor" href="#musichaos" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Musichaos</h1>
+
+<blockquote>
+<p>Bring tidiness into your music chaos</p>
+</blockquote>
+
+<hr>
+
+<p><code>musichaos</code> is a tool to tidy up the chaos in your local music library on a file basis.
+It pulls the tags from the audio files and structures the audio files like this:</p>
+
+<pre><code>~/music
+│   ├── Artist 01
+│   │   └── Album 01
+│   │   │   └── Title 01
+│   │   │   │── Title 02
+│   ├── Artist 02
+│   │   └── Album 01
+│   │   │   └── Title 01
+│   │   │   │── Title 02
+</code></pre>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Installation</h2>
+
+<p>From pip:</p>
+
+<div class="highlight highlight-source-shell"><pre>pip install musichaos</pre></div>
+
+<p>From source:</p>
+
+<pre><code>git clone https://github.com/timofurrer/musichaos
+cd musichaos
+pip install .
+</code></pre>
+
+<h2>
+<a id="usage---command-line-interface" class="anchor" href="#usage---command-line-interface" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage - Command Line Interface</h2>
+
+<p><code>musichaos</code> can be used as a CLI tool.</p>
+
+<p>To use it just specify the root directory which contains your music chaos and a target directory where to put the clean structure.
+They can point to the same location.</p>
+
+<pre><code>musichaos ~/downloads ~/music
+</code></pre>
+
+<p>This will end up in the following structure</p>
+
+<pre><code>~/music
+│   ├── Artist 01
+│   │   └── Album 01
+│   │   │   └── Title 01
+│   │   │   │── Title 02
+│   ├── Artist 02
+│   │   └── Album 01
+│   │   │   └── Title 01
+│   │   │   │── Title 02
+</code></pre>
+
+<p>If you do not want to move the audio file but link them instead - run the following command:</p>
+
+<pre><code>musichaos ~/downloads ~/music --link
+</code></pre>
+
+<p>This will end up in the following structure</p>
+
+<pre><code>~/music
+│   ├── Artist 01
+│   │   └── Album 01
+│   │   │   └── Title 01 -&gt; ../../../downloads/Some_weird_audio_file_01.mp3
+│   │   │   │── Title 02 -&gt; ../../../downloads/Some_weird_audio_file_02.mp3
+│   ├── Artist 02
+│   │   └── Album 01
+│   │   │   └── Title 01 -&gt; ../../../downloads/Some_weird_audio_file_03.mp3
+│   │   │   │── Title 02 -&gt; ../../../downloads/Some_weird_audio_file_04.mp3
+</code></pre>
+
+<p>If you are not sure what <code>musichaos</code> will do - just do a dry run:</p>
+
+<pre><code>musichaos ~/downloads ~/music --dry-run
+</code></pre>
+
+<p>Let's have a look at the help message:</p>
+
+<pre><code>Usage: __main__.py [OPTIONS] ROOTDIR TARGETDIR
+
+  Tidy up your music chaos.
+
+Options:
+  -l, --link  Link audio files instead of move.
+  --dry-run   Run a dry run.
+  --help      Show this message and exit.
+</code></pre>
+
+<h2>
+<a id="usage---python-package" class="anchor" href="#usage---python-package" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Usage - Python Package</h2>
+
+<p><code>musichaos</code> can be imported in your python project, too. Just install it in your python environment and <code>import musichaos</code>:</p>
+
+<div class="highlight highlight-source-python"><pre><span class="pl-k">from</span> musichaos <span class="pl-k">import</span> Musichaos
+
+chaos <span class="pl-k">=</span> Musichaos(rootdir)
+chaos.tidy_up(targetdir, link, dry_run)</pre></div>
+
+<h2>
+<a id="supported-audio-file-formats" class="anchor" href="#supported-audio-file-formats" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Supported Audio File Formats</h2>
+
+<p>At the moment the following file formats are supported:</p>
+
+<ul>
+<li>ASF (*.asf)</li>
+<li>FLAC (*.flac)</li>
+<li>M4A (*.m4a)</li>
+<li>Monkey's Audio (*.ape)</li>
+<li>MP3 (*.mp3)</li>
+<li>Musepack (*.mpc, *.mp+, *.mpp)</li>
+<li>Ogg Opus, Ogg FLAC, Ogg Speex, Ogg Theora, Ogg Vorbis
+  (*.ogg, *.ogv, *.oga, *.ogx, *.ogm, *.spx, *opus)</li>
+<li>True Audio (*.tta)</li>
+<li>WavPack (*.wv)</li>
+<li>OptimFROG (*.mp3)</li>
+<li>AIFF (*.aiff, *.aif, *.aifc)</li>
+</ul>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/timofurrer/musichaos">Musichaos</a> is maintained by <a href="https://github.com/timofurrer">timofurrer</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
