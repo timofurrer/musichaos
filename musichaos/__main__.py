@@ -18,7 +18,7 @@ from .errors import MusichaosError
 @click.option("--dry-run", is_flag=True)
 def main(rootdir, targetdir, link, dry_run):
     """
-        Main command line action.
+        Tidy up your music chaos.
     """
     musichaos = Musichaos(rootdir)
     try:
