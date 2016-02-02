@@ -61,15 +61,15 @@ class Musichaos(object):
         if targetdir is None:
             targetdir = self.rootdir
 
-        for audiofile_path in self._get_audio_files():
+        for audiofile_path in self.get_audio_files():
             audio_file = mutagen.File(audiofile_path, easy=True)
             audio_fileext = os.path.splitext(audiofile_path)[-1]
             if not audio_file:
                 raise UnrecognizedFormat(audio_fileext)
 
-            artist = self._get_audio_tag(audio_file, "artist")
-            album = self._get_audio_tag(audio_file, "album")
-            title = self._get_audio_tag(audio_file, "title")
+            artist = self.get_audio_tag(audio_file, "artist")
+            album = self.get_audio_tag(audio_file, "album")
+            title = self.get_audio_tag(audio_file, "title")
 
             artist_dir = os.path.join(targetdir, fix_for_path(artist))
             album_dir = os.path.join(artist_dir, fix_for_path(album))
@@ -91,7 +91,7 @@ class Musichaos(object):
             else:
                 move_file(audiofile_path, title_file, dry_run)
 
-    def _get_audio_files(self):
+    def get_audio_files(self):
         """
             Gets all audio files underneath the
             root directory.
@@ -99,12 +99,13 @@ class Musichaos(object):
             :returns: list of audio file paths
             :rtype: list
         """
+        print(glob.iglob)
         return itertools.chain.from_iterable(
             glob.iglob(os.path.join(self.rootdir, pattern))
             for pattern in self.SUPPORTED_FORMATS)
 
     @staticmethod
-    def _get_audio_tag(audiofile, name):
+    def get_audio_tag(audiofile, name):
         """
             Gets a specific tag from a given audio file.
 

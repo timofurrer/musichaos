@@ -7,3 +7,8 @@ __pycache__
 
 # python virtualenv and setuptool files
 env/
+musichaos.egg-info/
+
+# testing
+.tox/
+.coverage
